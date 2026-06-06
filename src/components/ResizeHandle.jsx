@@ -6,6 +6,7 @@ function ResizeHandle({ onResize }) {
     e.preventDefault()
     e.stopPropagation()
 
+    // Track position continuously so each delta is relative to the last mouse position
     let lastX = e.clientX
 
     const handleMouseMove = (e) => {
@@ -19,6 +20,7 @@ function ResizeHandle({ onResize }) {
       window.removeEventListener('mouseup', handleMouseUp)
     }
 
+    // Attach to window so dragging works even if mouse leaves the handle
     window.addEventListener('mousemove', handleMouseMove)
     window.addEventListener('mouseup', handleMouseUp)
   }, [onResize])

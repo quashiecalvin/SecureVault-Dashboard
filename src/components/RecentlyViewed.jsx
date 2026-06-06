@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { FileText, FileImage, File, Clock, FolderOpen } from 'lucide-react'
 
+// Return the right icon based on file extension
 function getFileIcon(name) {
   const ext = name.split('.').pop().toLowerCase()
   if (['pdf', 'docx', 'txt'].includes(ext)) return <FileText size={14} />
@@ -9,21 +10,24 @@ function getFileIcon(name) {
 }
 
 function RecentlyViewed({ recentFiles, selectedFile, onSelectFile, onShowInFolder, width }) {
-  const [contextMenu, setContextMenu] = useState(null) // { x, y, file }
+  // Stores position and target file for the right-click context menu
+  const [contextMenu, setContextMenu] = useState(null)
 
+  // Prevent browser's default context menu and show our custom one at click position
   const handleRightClick = (e, file) => {
     e.preventDefault()
     e.stopPropagation()
     setContextMenu({ x: e.clientX, y: e.clientY, file })
   }
 
+  // Select the file and trigger "Show in Enclosing Folder" in App.jsx
   const handleShowInFolder = () => {
-  if (contextMenu?.file) {
-    onSelectFile(contextMenu.file, contextMenu.file.path)
-    onShowInFolder(contextMenu.file)
+    if (contextMenu?.file) {
+      onSelectFile(contextMenu.file, contextMenu.file.path)
+      onShowInFolder(contextMenu.file)
+    }
+    setContextMenu(null)
   }
-  setContextMenu(null)
-}
 
   const handleClick = (e, file) => {
     e.stopPropagation()
@@ -58,7 +62,7 @@ function RecentlyViewed({ recentFiles, selectedFile, onSelectFile, onShowInFolde
         <p style={{ fontSize: 11, color: '#2A2F45' }}>Last 5 files opened</p>
       </div>
 
-      {/* List */}
+      {/* Empty state or list of recent files */}
       <div style={{ flex: 1, overflowY: 'auto', padding: '8px 0' }}>
         {recentFiles.length === 0 ? (
           <div style={{
@@ -99,12 +103,11 @@ function RecentlyViewed({ recentFiles, selectedFile, onSelectFile, onShowInFolde
                   if (!isSelected) e.currentTarget.style.background = 'transparent'
                 }}
               >
-                {/* Icon */}
                 <span style={{ color: isSelected ? '#00C2FF' : '#6B7280', display: 'flex', flexShrink: 0 }}>
                   {getFileIcon(file.name)}
                 </span>
 
-                {/* Info */}
+                {/* Filename and path below it */}
                 <div style={{ flex: 1, overflow: 'hidden' }}>
                   <p style={{
                     fontSize: 12,
@@ -127,19 +130,17 @@ function RecentlyViewed({ recentFiles, selectedFile, onSelectFile, onShowInFolde
                   </p>
                 </div>
 
-                {/* Index badge */}
-                <span style={{
-                  fontSize: 10,
-                  color: '#2A2F45',
-                  flexShrink: 0,
-                }}>#{index + 1}</span>
+                {/* Position badge e.g. #1, #2 */}
+                <span style={{ fontSize: 10, color: '#2A2F45', flexShrink: 0 }}>
+                  #{index + 1}
+                </span>
               </div>
             )
           })
         )}
       </div>
 
-      {/* Context Menu */}
+      {/* Context menu — rendered at exact right-click position using fixed positioning */}
       {contextMenu && (
         <div
           style={{

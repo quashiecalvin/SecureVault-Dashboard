@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from 'react'
 import { Search } from 'lucide-react'
 import TreeNode from './TreeNode'
 
+// Flatten the nested tree into a single list — needed for keyboard navigation
 function flattenTree(nodes, result = []) {
   for (const node of nodes) {
     result.push(node)
@@ -10,6 +11,8 @@ function flattenTree(nodes, result = []) {
   return result
 }
 
+// Walk the tree recursively and return the IDs of all parent folders for a given file
+// Used by "Show in Enclosing Folder" to know which folders to expand
 function getAncestorIds(nodes, targetId, path = []) {
   for (const node of nodes) {
     if (node.id === targetId) return path
@@ -24,10 +27,13 @@ function getAncestorIds(nodes, targetId, path = []) {
 function FileTree({ data, selectedFile, onSelectFile, width, revealFile, onRevealDone }) {
   const [focusedId, setFocusedId] = useState(null)
   const [search, setSearch] = useState('')
+  // Set of open folder IDs — Set is used for O(1) lookup
   const [openIds, setOpenIds] = useState(new Set())
 
   const allNodes = flattenTree(data)
 
+  // When "Show in Enclosing Folder" is triggered, expand all ancestor folders
+  // and focus the target file in the tree
   useEffect(() => {
     if (revealFile) {
       const ancestorIds = getAncestorIds(data, revealFile.id)
@@ -43,6 +49,7 @@ function FileTree({ data, selectedFile, onSelectFile, width, revealFile, onRevea
     }
   }, [revealFile, data, onRevealDone])
 
+  // Keyboard navigation — ArrowUp/Down moves focus, Enter selects the focused file
   const handleKeyDown = useCallback((e) => {
     const flat = allNodes
     const currentIndex = flat.findIndex(n => n.id === focusedId)
@@ -61,10 +68,12 @@ function FileTree({ data, selectedFile, onSelectFile, width, revealFile, onRevea
     }
   }, [focusedId, allNodes, onSelectFile])
 
+  // If search is active, filter all nodes by name — otherwise show full tree
   const filtered = search
     ? allNodes.filter(n => n.name.toLowerCase().includes(search.toLowerCase()))
     : null
 
+  // Add or remove a folder ID from the open set when clicked
   const toggleOpen = (id) => {
     setOpenIds(prev => {
       const next = new Set(prev)
@@ -130,7 +139,7 @@ function FileTree({ data, selectedFile, onSelectFile, width, revealFile, onRevea
         </div>
       </div>
 
-      {/* Tree Body */}
+      {/* Tree Body — show filtered results or full tree */}
       <div style={{ flex: 1, overflowY: 'auto', padding: '8px 0' }}>
         {filtered
           ? filtered.length > 0
