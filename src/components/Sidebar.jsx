@@ -36,13 +36,12 @@ function Sidebar({ activeView, onViewChange }) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: 8,
       }}>
         <Shield size={16} color='#00C2FF' />
       </div>
 
       {/* Divider */}
-      <div style={{ width: 24, height: 1, background: '#2A2F45', margin: '4px 0' }} />
+      <div style={{ width: 24, height: 1, background: '#2A2F45' }} />
 
       {/* Nav Icons */}
       <div
@@ -66,7 +65,7 @@ function Sidebar({ activeView, onViewChange }) {
       </div>
 
       {/* Divider */}
-      <div style={{ width: 24, height: 1, background: '#2A2F45', margin: '4px 0' }} />
+      <div style={{ width: 24, height: 1, background: '#2A2F45' }} />
 
       <div style={iconStyle(false)} title='Settings'>
         <Settings size={18} />

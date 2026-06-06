@@ -19,7 +19,7 @@
                 "name": "Discovery_Phase",
                 "type": "folder",
                 "children": [
-                  { "id": "email_1", "name": "Email_Thread_Jan2024.pdf", "type": "file", "size": "4.2MB" },
+                  { "id": "email_1", "name": "amal1_contract_final_v2.pdf", "type": "file", "size": "4.2MB" },
                   { "id": "email_2", "name": "Leak_Evidence.png", "type": "file", "size": "8.1MB" }
                 ]
               },
