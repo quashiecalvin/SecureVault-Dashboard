@@ -1,18 +1,18 @@
 import { Files, Clock, Star, Settings, Shield } from 'lucide-react'
 
-const iconStyle = (active) => ({
-  width: 36,
-  height: 36,
-  borderRadius: 8,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  cursor: 'pointer',
-  color: active ? '#00C2FF' : '#6B7280',
-  background: active ? '#00C2FF18' : 'transparent',
-})
+function Sidebar({ activeView, onViewChange }) {
+  const iconStyle = (active) => ({
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    cursor: 'pointer',
+    color: active ? '#00C2FF' : '#6B7280',
+    background: active ? '#00C2FF18' : 'transparent',
+  })
 
-function Sidebar() {
   return (
     <div style={{
       width: 60,
@@ -45,14 +45,32 @@ function Sidebar() {
       <div style={{ width: 24, height: 1, background: '#2A2F45', margin: '4px 0' }} />
 
       {/* Nav Icons */}
-      <div style={iconStyle(true)}><Files size={18} /></div>
-      <div style={iconStyle(false)}><Clock size={18} /></div>
-      <div style={iconStyle(false)}><Star size={18} /></div>
+      <div
+        style={iconStyle(activeView === 'explorer')}
+        onClick={(e) => { e.stopPropagation(); onViewChange('explorer') }}
+        title='File Explorer'
+      >
+        <Files size={18} />
+      </div>
+
+      <div
+        style={iconStyle(activeView === 'recent')}
+        onClick={(e) => { e.stopPropagation(); onViewChange('recent') }}
+        title='Recently Viewed'
+      >
+        <Clock size={18} />
+      </div>
+
+      <div style={iconStyle(false)} title='Starred'>
+        <Star size={18} />
+      </div>
 
       {/* Divider */}
       <div style={{ width: 24, height: 1, background: '#2A2F45', margin: '4px 0' }} />
 
-      <div style={iconStyle(false)}><Settings size={18} /></div>
+      <div style={iconStyle(false)} title='Settings'>
+        <Settings size={18} />
+      </div>
 
       {/* Avatar */}
       <div style={{
