@@ -28,22 +28,20 @@ function FileTree({ data, selectedFile, onSelectFile, width, revealFile, onRevea
 
   const allNodes = flattenTree(data)
 
-useEffect(() => {
-  if (revealFile) {
-    console.log('revealFile:', revealFile)
-    const ancestorIds = getAncestorIds(data, revealFile.id)
-    console.log('ancestorIds:', ancestorIds)
-    if (ancestorIds) {
-      setOpenIds(prev => {
-        const next = new Set(prev)
-        ancestorIds.forEach(id => next.add(id))
-        return next
-      })
-      setFocusedId(revealFile.id)
+  useEffect(() => {
+    if (revealFile) {
+      const ancestorIds = getAncestorIds(data, revealFile.id)
+      if (ancestorIds) {
+        setOpenIds(prev => {
+          const next = new Set(prev)
+          ancestorIds.forEach(id => next.add(id))
+          return next
+        })
+        setFocusedId(revealFile.id)
+      }
+      onRevealDone()
     }
-    onRevealDone()
-  }
-}, [revealFile])
+  }, [revealFile, data, onRevealDone])
 
   const handleKeyDown = useCallback((e) => {
     const flat = allNodes
