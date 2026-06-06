@@ -48,4 +48,4 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ## Live Demo
 
-[View Deployed App](YOUR_VERCEL_LINK_HERE)
+[View Deployed App](https://secure-vault-dashboard-six.vercel.app)
