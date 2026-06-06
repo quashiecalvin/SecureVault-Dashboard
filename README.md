@@ -1,16 +1,52 @@
-# React + Vite
+# SecureVault Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A file explorer interface built for SecureVault Inc., a legal firm managing sensitive case documents across departments. This project was built as part of the AmaliTech Practical Capstone Challenge.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+The dashboard provides a VS Code-style file tree interface for navigating SecureVault's internal document structure. Files are organised by department — Legal, Finance, IT Security, and Shared Resources.
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **React** (via Vite)
+- **Lucide React** for icons
+- **CSS-in-JS** inline styles following a base-4 spacing system
+- No UI libraries — built from scratch
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Recursive folder tree** — folders can be nested to any depth, handled via a recursive `TreeNode` component
+- **File properties panel** — clicking a file shows its name, MIME type, size, and full location path
+- **Keyboard navigation** — use arrow keys to move through the tree and Enter to select a file
+- **Search** — filters the tree in real time, shows "No results found" when nothing matches
+- **Resizable panels** — drag the borders between panels to resize the file tree and properties panel
+- **Click to deselect** — clicking the background clears the current selection
+- **Recently Viewed** *(Wildcard Feature)* — tracks the last 5 files opened, accessible via the clock icon in the sidebar
+
+## Wildcard Feature — Recently Viewed
+
+The Recently Viewed panel tracks the last 5 files a user opened during their session. The motivation behind this feature is a real use case — in a large document vault, a user may open a file and later forget exactly where it was located. The Recently Viewed panel solves this by:
+
+1. Showing the filename and its full folder path at a glance
+2. Allowing the user to right-click any recent file and select **"Show in Enclosing Folder"** — this switches back to the explorer view and automatically expands the folder tree to reveal exactly where the file lives
+
+## Design
+
+The UI follows a dark "cyber-secure" aesthetic with a base-4 spacing system. The full design system and UI frames are available in Figma:
+
+[View Figma Design](YOUR_FIGMA_LINK_HERE)
+
+## Running Locally
+
+```bash
+git clone https://github.com/quashiecalvin/SecureVault-Dashboard.git
+cd SecureVault-Dashboard
+npm install
+npm run dev
+```
+
+Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+## Live Demo
+
+[View Deployed App](YOUR_VERCEL_LINK_HERE)
