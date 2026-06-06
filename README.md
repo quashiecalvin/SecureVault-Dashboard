@@ -20,7 +20,6 @@ The dashboard provides a VS Code-style file tree interface for navigating Secure
 - **Keyboard navigation** — use arrow keys to move through the tree and Enter to select a file
 - **Search** — filters the tree in real time, shows "No results found" when nothing matches
 - **Resizable panels** — drag the borders between panels to resize the file tree and properties panel
-- **Click to deselect** — clicking the background clears the current selection
 - **Recently Viewed** *(Wildcard Feature)* — tracks the last 5 files opened, accessible via the clock icon in the sidebar
 
 ## Wildcard Feature — Recently Viewed
@@ -34,7 +33,7 @@ The Recently Viewed panel tracks the last 5 files a user opened during their ses
 
 The UI follows a dark "cyber-secure" aesthetic with a base-4 spacing system. The full design system and UI frames are available in Figma:
 
-[View Figma Design](YOUR_FIGMA_LINK_HERE)
+[View Figma Design](https://www.figma.com/design/uyWmu3hzO1LmVDGEpVy8MP/SecureVault-Dashboard?node-id=1-2&t=LgFlMjrstN3f5p2S-1)
 
 ## Running Locally
 
