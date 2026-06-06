@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { Search } from 'lucide-react'
 import TreeNode from './TreeNode'
 
@@ -10,11 +10,40 @@ function flattenTree(nodes, result = []) {
   return result
 }
 
-function FileTree({ data, selectedFile, onSelectFile, width }) {
+function getAncestorIds(nodes, targetId, path = []) {
+  for (const node of nodes) {
+    if (node.id === targetId) return path
+    if (node.children) {
+      const result = getAncestorIds(node.children, targetId, [...path, node.id])
+      if (result) return result
+    }
+  }
+  return null
+}
+
+function FileTree({ data, selectedFile, onSelectFile, width, revealFile, onRevealDone }) {
   const [focusedId, setFocusedId] = useState(null)
   const [search, setSearch] = useState('')
+  const [openIds, setOpenIds] = useState(new Set())
 
   const allNodes = flattenTree(data)
+
+useEffect(() => {
+  if (revealFile) {
+    console.log('revealFile:', revealFile)
+    const ancestorIds = getAncestorIds(data, revealFile.id)
+    console.log('ancestorIds:', ancestorIds)
+    if (ancestorIds) {
+      setOpenIds(prev => {
+        const next = new Set(prev)
+        ancestorIds.forEach(id => next.add(id))
+        return next
+      })
+      setFocusedId(revealFile.id)
+    }
+    onRevealDone()
+  }
+}, [revealFile])
 
   const handleKeyDown = useCallback((e) => {
     const flat = allNodes
@@ -37,6 +66,15 @@ function FileTree({ data, selectedFile, onSelectFile, width }) {
   const filtered = search
     ? allNodes.filter(n => n.name.toLowerCase().includes(search.toLowerCase()))
     : null
+
+  const toggleOpen = (id) => {
+    setOpenIds(prev => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }
 
   return (
     <div
@@ -107,6 +145,8 @@ function FileTree({ data, selectedFile, onSelectFile, width }) {
                 onSelectFile={onSelectFile}
                 focusedId={focusedId}
                 onFocusChange={setFocusedId}
+                openIds={openIds}
+                onToggleOpen={toggleOpen}
               />
             ))
             : <p style={{ fontSize: 12, color: '#6B7280', padding: '16px', textAlign: 'center' }}>
@@ -121,6 +161,8 @@ function FileTree({ data, selectedFile, onSelectFile, width }) {
               onSelectFile={onSelectFile}
               focusedId={focusedId}
               onFocusChange={setFocusedId}
+              openIds={openIds}
+              onToggleOpen={toggleOpen}
             />
           ))}
       </div>

@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import {
   ChevronRight, ChevronDown,
   Folder, FolderOpen,
@@ -12,17 +11,17 @@ function getFileIcon(name) {
   return <File size={14} />
 }
 
-function TreeNode({ node, depth = 0, selectedFile, onSelectFile, focusedId, onFocusChange, path = '' }) {
-  const [isOpen, setIsOpen] = useState(false)
+function TreeNode({ node, depth = 0, selectedFile, onSelectFile, focusedId, onFocusChange, path = '', openIds, onToggleOpen }) {
   const isFolder = node.type === 'folder'
   const isSelected = selectedFile?.id === node.id
   const isFocused = focusedId === node.id
+  const isOpen = openIds.has(node.id)
   const currentPath = path ? `${path} / ${node.name}` : node.name
 
   const handleClick = (e) => {
     e.stopPropagation()
     if (isFolder) {
-      setIsOpen(!isOpen)
+      onToggleOpen(node.id)
     } else {
       onSelectFile(node, path || 'Root')
     }
@@ -93,6 +92,8 @@ function TreeNode({ node, depth = 0, selectedFile, onSelectFile, focusedId, onFo
           focusedId={focusedId}
           onFocusChange={onFocusChange}
           path={currentPath}
+          openIds={openIds}
+          onToggleOpen={onToggleOpen}
         />
       ))}
     </div>

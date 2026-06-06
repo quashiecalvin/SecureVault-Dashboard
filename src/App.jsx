@@ -4,7 +4,7 @@ import RecentlyViewed from './components/RecentlyViewed'
 import MainContent from './components/MainContent'
 import PropertiesPanel from './components/PropertiesPanel'
 import ResizeHandle from './components/ResizeHandle'
-import { useState, useRef, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import data from './data/data.json'
 
 function App() {
@@ -13,7 +13,8 @@ function App() {
   const [treeWidth, setTreeWidth] = useState(320)
   const [propsWidth, setPropsWidth] = useState(300)
   const [recentFiles, setRecentFiles] = useState([])
-  const [activeView, setActiveView] = useState('explorer') // 'explorer' | 'recent'
+  const [activeView, setActiveView] = useState('explorer')
+  const [revealFile, setRevealFile] = useState(null)
 
   const handleSelectFile = (file, path) => {
     if (selectedFile?.id === file.id) {
@@ -22,12 +23,16 @@ function App() {
     } else {
       setSelectedFile(file)
       setSelectedPath(path)
-      // Add to recently viewed
       setRecentFiles(prev => {
         const filtered = prev.filter(f => f.id !== file.id)
         return [{ ...file, path }, ...filtered].slice(0, 5)
       })
     }
+  }
+
+  const handleShowInFolder = (file) => {
+    setActiveView('explorer')
+    setTimeout(() => setRevealFile(file), 50)
   }
 
   const handleTreeResize = useCallback((delta) => {
@@ -51,13 +56,15 @@ function App() {
           selectedFile={selectedFile}
           onSelectFile={handleSelectFile}
           width={treeWidth}
+          revealFile={revealFile}
+          onRevealDone={() => setRevealFile(null)}
         />
       ) : (
         <RecentlyViewed
           recentFiles={recentFiles}
           selectedFile={selectedFile}
           onSelectFile={handleSelectFile}
-          onShowInFolder={() => setActiveView('explorer')}
+          onShowInFolder={handleShowInFolder}
           width={treeWidth}
         />
       )}

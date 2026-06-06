@@ -18,12 +18,12 @@ function RecentlyViewed({ recentFiles, selectedFile, onSelectFile, onShowInFolde
   }
 
   const handleShowInFolder = () => {
-    if (contextMenu?.file) {
-      onSelectFile(contextMenu.file, contextMenu.file.path)
-      onShowInFolder()
-    }
-    setContextMenu(null)
+  if (contextMenu?.file) {
+    onSelectFile(contextMenu.file, contextMenu.file.path)
+    onShowInFolder(contextMenu.file)
   }
+  setContextMenu(null)
+}
 
   const handleClick = (e, file) => {
     e.stopPropagation()
