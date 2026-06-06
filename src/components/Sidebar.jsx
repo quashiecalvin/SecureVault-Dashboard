@@ -87,7 +87,7 @@ function Sidebar({ activeView, onViewChange }) {
         fontWeight: 500,
         color: '#7B61FF',
         cursor: 'pointer',
-      }}>CK</div>
+      }}>CQ</div>
     </div>
   )
 }

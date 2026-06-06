@@ -11,7 +11,7 @@
         "children": [
           {
             "id": "case_a",
-            "name": "Doe_vs_MegaCorp_Inc",
+            "name": "Calvin_vs_ECG",
             "type": "folder",
             "children": [
               {
@@ -28,7 +28,7 @@
           },
           {
             "id": "case_b",
-            "name": "Smith_Estate_Dispute",
+            "name": "Quashie_Estate_Dispute",
             "type": "folder",
             "children": [
               { "id": "will_1", "name": "Last_Will_Testament.pdf", "type": "file", "size": "890KB" }
