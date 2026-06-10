@@ -86,10 +86,26 @@ const handleKeyDown = useCallback((e) => {
   }
 }, [focusedId, allNodes, openIds, onSelectFile, data])
 
-  // If search is active, filter all nodes by name — otherwise show full tree
-  const filtered = search
-    ? allNodes.filter(n => n.name.toLowerCase().includes(search.toLowerCase()))
-    : null
+ // If search is active, find matches and auto-expand their ancestor folders
+const filtered = search
+  ? allNodes.filter(n => n.name.toLowerCase().includes(search.toLowerCase()))
+  : null
+
+useEffect(() => {
+  if (search) {
+    const matches = allNodes.filter(n => n.name.toLowerCase().includes(search.toLowerCase()))
+    matches.forEach(match => {
+      const ancestors = getAncestorIds(data, match.id)
+      if (ancestors) {
+        setOpenIds(prev => {
+          const next = new Set(prev)
+          ancestors.forEach(id => next.add(id))
+          return next
+        })
+      }
+    })
+  }
+}, [search, data])
 
   // Add or remove a folder ID from the open set when clicked
   const toggleOpen = (id) => {
