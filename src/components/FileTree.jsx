@@ -49,24 +49,42 @@ function FileTree({ data, selectedFile, onSelectFile, width, revealFile, onRevea
     }
   }, [revealFile, data, onRevealDone])
 
-  // Keyboard navigation — ArrowUp/Down moves focus, Enter selects the focused file
-  const handleKeyDown = useCallback((e) => {
-    const flat = allNodes
-    const currentIndex = flat.findIndex(n => n.id === focusedId)
+ // Keyboard navigation — ArrowUp/Down moves focus, Right expands, Left collapses, Enter selects
+const handleKeyDown = useCallback((e) => {
+  const flat = allNodes
+  const currentIndex = flat.findIndex(n => n.id === focusedId)
+  const node = flat.find(n => n.id === focusedId)
 
-    if (e.key === 'ArrowDown') {
-      e.preventDefault()
-      const next = flat[currentIndex + 1]
-      if (next) setFocusedId(next.id)
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault()
-      const prev = flat[currentIndex - 1]
-      if (prev) setFocusedId(prev.id)
-    } else if (e.key === 'Enter') {
-      const node = flat.find(n => n.id === focusedId)
-      if (node && node.type === 'file') onSelectFile(node)
+  if (e.key === 'ArrowDown') {
+    e.preventDefault()
+    const next = flat[currentIndex + 1]
+    if (next) setFocusedId(next.id)
+
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault()
+    const prev = flat[currentIndex - 1]
+    if (prev) setFocusedId(prev.id)
+
+  } else if (e.key === 'ArrowRight') {
+    e.preventDefault()
+    if (node && node.type === 'folder' && !openIds.has(node.id)) {
+      setOpenIds(prev => { const next = new Set(prev); next.add(node.id); return next })
     }
-  }, [focusedId, allNodes, onSelectFile])
+
+  } else if (e.key === 'ArrowLeft') {
+    e.preventDefault()
+    if (node && node.type === 'folder' && openIds.has(node.id)) {
+      setOpenIds(prev => { const next = new Set(prev); next.delete(node.id); return next })
+    }
+
+  } else if (e.key === 'Enter') {
+    e.preventDefault()
+    if (node && node.type === 'file') {
+      const path = getAncestorIds(data, node.id)?.map(id => flat.find(n => n.id === id)?.name).filter(Boolean).join(' / ') || 'Root'
+      onSelectFile(node, path)
+    }
+  }
+}, [focusedId, allNodes, openIds, onSelectFile, data])
 
   // If search is active, filter all nodes by name — otherwise show full tree
   const filtered = search
