@@ -15,7 +15,7 @@ The dashboard provides a VS Code-style file tree interface for navigating Secure
 
 ## Features
 
-- **Recursive folder tree** — folders can be nested to any depth, handled via a recursive `TreeNode` component
+- **Recursive folder tree** —  uses a recursive `TreeNode` component to render the file tree dynamically at any depth, with folder states managed centrally using a `Set` for efficient expansion and control. 
 - **File properties panel** — clicking a file shows its name, MIME type, size, and full location path
 - **Keyboard navigation** — use arrow keys to move through the tree and Enter to select a file
 - **Search** — filters the tree in real time, shows "No results found" when nothing matches
